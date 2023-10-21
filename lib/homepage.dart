@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:contact_app/auth/login_modal.dart';
 import 'package:contact_app/auth/modal_function.dart';
 import 'package:contact_app/utils/app_theme.dart';
 import 'package:contact_app/utils/custom_button.dart';
