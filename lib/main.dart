@@ -1,4 +1,5 @@
-import 'package:contact_app/contacts/contact_details.dart';
+
+import 'package:contact_app/contacts/contact_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ContactDetails(),
+      home: ContactListView(),
     );
   }
 }
