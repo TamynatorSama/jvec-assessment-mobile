@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:contact_app/contacts/edit_contact.dart';
 import 'package:contact_app/contacts/reusables/action_btn.dart';
 import 'package:contact_app/contacts/reusables/contact_info_listing.dart';
 import 'package:contact_app/utils/app_theme.dart';
@@ -27,7 +28,9 @@ class ContactDetails extends StatelessWidget {
               image: DecorationImage(image: AssetImage(imagePath[Random().nextInt(imagePath.length)]),fit: BoxFit.cover,)
             ),
             child: IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pop(context);
+              },
               icon: const Icon(Icons.arrow_back_ios,color: Colors.white,),
               ),
           ),
@@ -50,8 +53,10 @@ class ContactDetails extends StatelessWidget {
                         width: 120,
                         height: 120,
                         decoration: BoxDecoration(
+                          color: AppTheme.backgroundColor,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 2,color: Colors.white)
+                          image: const DecorationImage(image: AssetImage('assets/images/empty_image.png')),
+                          border: Border.all(width: 2,color: const Color.fromARGB(255, 89, 89, 89))
                         ),
                       ),
                       const SizedBox(
@@ -66,7 +71,9 @@ class ContactDetails extends StatelessWidget {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           spacing: 20,
                           children: [
-                            ActionBtn(icons: svgIcons['edit']!, callback: (){}),
+                            ActionBtn(icons: svgIcons['edit']!, callback: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const EditContact()));
+                            }),
                             ActionBtn(icons: svgIcons['share']!, callback: (){}),
                             ActionBtn(icons: svgIcons['delete']!, callback: (){})
                           ],

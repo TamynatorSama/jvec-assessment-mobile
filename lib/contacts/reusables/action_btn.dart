@@ -9,15 +9,18 @@ class ActionBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-                        width: 40,
-                        height: 40,
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                          color: AppTheme.btnColor,
-                          borderRadius: BorderRadius.circular(10),
+    return InkWell(
+      onTap: callback,
+      child: Container(
+                          width: 40,
+                          height: 40,
+                          padding: const EdgeInsets.all(9),
+                          decoration: BoxDecoration(
+                            color: AppTheme.btnColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: SvgPicture.string(icons),
                         ),
-                        child: SvgPicture.string(icons),
-                      );
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:azlistview/azlistview.dart';
+import 'package:contact_app/contacts/create_contact.dart';
 import 'package:contact_app/contacts/reusables/contact_list_Card.dart';
 import 'package:contact_app/model/contact_model.dart';
 import 'package:contact_app/utils/app_theme.dart';
@@ -73,7 +74,11 @@ Expanded(child:
             ],
           )))
       ]),),
-      
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppTheme.btnColor,
+        onPressed: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const CreateContact())),
+        child: const Icon(Icons.add,color: Colors.white,),
+        ),
     );
   }
 }
