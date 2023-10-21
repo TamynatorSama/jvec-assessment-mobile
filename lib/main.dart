@@ -1,9 +1,9 @@
-
-import 'package:contact_app/contacts/contact_list_view.dart';
+import 'package:contact_app/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
     statusBarColor: Colors.transparent,
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ContactListView(),
+      home: HomePage()
     );
   }
 }
