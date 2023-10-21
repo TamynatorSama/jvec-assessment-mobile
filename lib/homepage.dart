@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:contact_app/auth/login_modal.dart';
+import 'package:contact_app/auth/modal_function.dart';
 import 'package:contact_app/utils/app_theme.dart';
 import 'package:contact_app/utils/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -39,19 +40,7 @@ class HomePage extends StatelessWidget {
           CustomButton(
               label: "Continue",
               onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  // constraints: BoxConstraints(
-                  //   maxHeight: MediaQuery.of(context).size.height*0.5
-                  // ),
-                  // isDismissible: true,
-                  backgroundColor: Colors.transparent,
-                  builder: (context) => BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: const LoginModal()),
-                );
+                showSignupModal(context);
               }),
           SizedBox(
             height: MediaQuery.of(context).padding.top + 10,
