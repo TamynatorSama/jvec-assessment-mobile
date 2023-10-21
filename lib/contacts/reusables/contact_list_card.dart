@@ -1,6 +1,5 @@
 import 'package:contact_app/utils/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ContactListCard extends StatelessWidget {
   final String label;

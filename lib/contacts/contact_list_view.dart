@@ -2,7 +2,6 @@ import 'package:azlistview/azlistview.dart';
 import 'package:contact_app/contacts/reusables/contact_list_Card.dart';
 import 'package:contact_app/model/contact_model.dart';
 import 'package:contact_app/utils/app_theme.dart';
-import 'package:contact_app/utils/svg_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
