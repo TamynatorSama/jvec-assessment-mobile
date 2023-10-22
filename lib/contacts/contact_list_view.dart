@@ -12,7 +12,7 @@ class ContactListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<ContactInfo> data = [ContactInfo(name: "Segun Kolawole",phoneNumber: "09063976031",),ContactInfo(name: "Bisi Law",phoneNumber: "08063473051"),ContactInfo(name: "Abdullai akanbi",phoneNumber: "07083436031"),ContactInfo(name: "Zen nitsu",phoneNumber: "01062936431"),];
+    List<ContactInfo> data = [ContactInfo(firstName: "Segun",lastName: "Kolawole",phoneNumber: "09063976031",),ContactInfo(firstName: "Bisi ",lastName: "Law",phoneNumber: "08063473051"),ContactInfo(firstName: "Abdullai",lastName: "akanbi",phoneNumber: "07083436031"),ContactInfo(firstName: "Zen",lastName: "nitsu",phoneNumber: "01062936431"),];
      SuspensionUtil.sortListBySuspensionTag(data);
      SuspensionUtil.setShowSuspensionStatus(data);
 
@@ -70,7 +70,7 @@ Expanded(child:
                     const SizedBox(height: 10,)
                   ],
                 ),
-              ContactListCard(label: data[index].name, value: data[index].phoneNumber!)
+              ContactListCard(label: "${data[index].firstName} ${data[index].lastName}", value: data[index].phoneNumber)
             ],
           )))
       ]),),
