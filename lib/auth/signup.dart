@@ -83,7 +83,6 @@ class _SignupModalState extends State<SignupModal> {
                                     password: passwordController.text,
                                     fullName: nameController.text)
                                 .then((value) async {
-                              showFeedbackToast(context, value["message"]);
                               await CustomLoader.dismissLoader().then((_) {
                                 if (value['status']) {
                                   showFeedbackToast(context, value["message"],type: ToastType.success);
