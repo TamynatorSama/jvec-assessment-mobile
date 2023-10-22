@@ -77,6 +77,7 @@ class _SignupModalState extends State<SignupModal> {
                         label: "Sign up",
                         onTap: () async {
                           if (_formkey.currentState!.validate()) {
+                            FocusScope.of(context).unfocus();
                             CustomLoader.showLoader(context);
                             await AuthRequest.signup(
                                     email: emailController.text.trim(),
@@ -84,20 +85,19 @@ class _SignupModalState extends State<SignupModal> {
                                     fullName: nameController.text)
                                 .then((value) async {
                               await CustomLoader.dismissLoader().then((_) {
+                                FocusScope.of(context).unfocus();
                                 if (value['status']) {
                                   showFeedbackToast(context, value["message"],type: ToastType.success);
-                                  return Navigator.pushReplacement(
+                                  
+                                  return Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const ContactListView()));
+                                              const ContactListView()),(Route route)=>false);
                                 }
                                 showFeedbackToast(context, value["message"]);
                               });
                             });
-
-                            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const ContactListView()));
-                            // AuthRequest.login(email: email, password: password)
                           }
                         },
                         removePadding: true,
