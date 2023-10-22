@@ -118,7 +118,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: const BorderSide(
-                  color: Color(0xff473767),
+                  color: Color(0xffCCD1D3),
                 ),
               ),
               focusedErrorBorder: OutlineInputBorder(
