@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class UserData {
 
   // Create storage
-  static late FlutterSecureStorage _storage;
+  static late FlutterSecureStorage storage;
 
   static String _token = '';
   static String _fullName = '';
@@ -24,33 +24,33 @@ class UserData {
 
   static set token(String value) {
     _token = value;
-    _storage.write(key:'access_token', value:value);
+    storage.write(key:'access_token', value:value);
   }
 
   static set fullName(String value) {
     _fullName = value;
-    _storage.write(key:'full_name', value:value);
+    storage.write(key:'full_name', value:value);
   }
 
 
   static set email(String value) {
     _email = value;
-    _storage.write(key:'email', value:value);
+    storage.write(key:'email', value:value);
   }
 
   static set identifier(String value) {
     _identifier = value;
-    _storage.write(key:'identifier', value:value);
+    storage.write(key:'identifier', value:value);
   }
 
 
   static Future<void> initialize() async {
 
     // intializing and setting locally store user data 
-    _storage = const FlutterSecureStorage();
-    _token = await _storage.read(key:'access_token') ?? '';
-    _fullName = await _storage.read(key:'full_name') ?? '';
-    _email = await _storage.read(key:'email') ?? '';
-    _identifier = await _storage.read(key:'identifier') ?? '';
+    storage = const FlutterSecureStorage();
+    _token = await storage.read(key:'access_token') ?? '';
+    _fullName = await storage.read(key:'full_name') ?? '';
+    _email = await storage.read(key:'email') ?? '';
+    _identifier = await storage.read(key:'identifier') ?? '';
   }
 }

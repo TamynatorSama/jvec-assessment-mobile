@@ -24,7 +24,9 @@ class ContactInfoListing extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label,style: AppTheme.mainTextStyle.override(color:Colors.grey),),
-          Text(value,style: AppTheme.headerTextStyle.override(fontSize: 18),)
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.69),
+            child: Text(value,style: AppTheme.headerTextStyle.override(fontSize: 17),))
         ],
       )
     ],

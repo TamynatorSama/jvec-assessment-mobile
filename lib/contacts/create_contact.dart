@@ -4,6 +4,7 @@ import 'package:contact_app/app_provider.dart';
 import 'package:contact_app/model/contact_model.dart';
 import 'package:contact_app/utils/app_theme.dart';
 import 'package:contact_app/utils/custom_input_field.dart';
+import 'package:contact_app/utils/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -60,11 +61,12 @@ class _CreateContactState extends State<CreateContact> {
           ),
           actions: [
             TextButton(
-                onPressed: () async{
+                onPressed: () async {
                   if (_formkey.currentState!.validate()) {
-                    print("here");
+                    FocusScope.of(context).unfocus();
+                    CustomLoader.showLoader(context);
                     ContactInfo newContact = ContactInfo(
-                        identifier: "asdasda",
+                        identifier: "",
                         firstName: firstNameController.text,
                         lastName: lastNameController.text,
                         phoneNumber: phoneNumberController.text,
@@ -72,14 +74,16 @@ class _CreateContactState extends State<CreateContact> {
                         email: emailController.text,
                         facebook: facebookController.text);
                     await provider
-                        .createNewContact(newContact, context)
-                        .then((value) {
+                        .createNewContact(newContact, context,
+                            image: image?.path)
+                        .then((value) async{
+                      FocusScope.of(context).unfocus();
+                      await CustomLoader.dismissLoader();
                       if (value) {
                         Navigator.pop(context);
                       }
                     });
                   }
-                  // && _formkey.currentState!.isValid)
                 },
                 child: Text(
                   "Save",

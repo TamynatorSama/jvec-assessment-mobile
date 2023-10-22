@@ -5,7 +5,7 @@ class ContactInfo extends ISuspensionBean {
   final String identifier;
   final String lastName;
   final String phoneNumber;
-  String? profilePicture;
+  String profilePicture;
   String? facebook;
   String? twitter;
   String? email;
@@ -42,7 +42,6 @@ class ContactInfo extends ISuspensionBean {
       "first_name": firstName,
       "last_name": lastName,
       "phone_number": phoneNumber,
-      "email": email,
       "profile_picture": profilePicture
     };
 
@@ -54,6 +53,22 @@ class ContactInfo extends ISuspensionBean {
     }
     if (twitter != null) {
       returnjson["twitter"] = twitter;
+    }
+    return returnjson;
+  }
+  Map<String, dynamic> share() {
+    Map<String, dynamic> returnjson = {
+      "Phone Number": phoneNumber,
+    };
+
+    if (email != null) {
+      returnjson["Email"] = email;
+    }
+    if (facebook != null) {
+      returnjson["Facebook"] = facebook;
+    }
+    if (twitter != null) {
+      returnjson["Twitter"] = twitter;
     }
     return returnjson;
   }
