@@ -66,6 +66,7 @@ class _CreateContactState extends State<CreateContact> {
                 onPressed: () {
                   if(_formkey.currentState!.validate()){
                     ContactInfo newContact = ContactInfo(firstName: firstNameController.text, lastName: lastNameController.text, phoneNumber: phoneNumberController.text,twitter: twitterController.text,email: emailController.text,facebook: facebookController.text);
+                    provider.createNewContact(newContact);
                   }
                   // && _formkey.currentState!.isValid)
                 },

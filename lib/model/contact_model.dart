@@ -17,7 +17,7 @@ class ContactInfo extends ISuspensionBean {
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
-    this.email,this.facebook,this.profilePicture,this.twitter
+    this.email,this.facebook,this.profilePicture="",this.twitter
   }){
     tagIndex = firstName[0];
   }
@@ -25,8 +25,33 @@ class ContactInfo extends ISuspensionBean {
   String getSuspensionTag() => tagIndex!;
 
 
+  Map<String,dynamic> toJson() {
+
+    Map<String,dynamic> returnjson = {
+    "first_name": firstName,
+    "last_name": lastName,
+    "phone_number": phoneNumber,
+    "email":email,
+    "profile_picture": profilePicture
+  };
+
+    if(email !=null){
+      returnjson["email"] = email;
+    }
+    if(facebook !=null){
+      returnjson["facebook"] = facebook;
+    }
+    if(twitter !=null){
+      returnjson["twitter"] = twitter;
+    }
+    return returnjson;
+  }
+
+
+  
+
   @override
-  String toString() => json.encode(this);
+  String toString() => 'ContactInfo(firstname $firstName,lastname: $lastName, phonenumber: $phoneNumber)';
 
 
 }
