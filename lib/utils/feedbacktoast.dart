@@ -20,14 +20,15 @@ showFeedbackToast(BuildContext context, String message,
         decoration: BoxDecoration(
             color: AppTheme.btnColor,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              BoxShadow(
-                  blurStyle: BlurStyle.outer,
-                  color: Color.fromARGB(85, 158, 158, 158),
-                  offset: Offset(0, 0),
-                  spreadRadius: 1,
-                  blurRadius: 10)
-            ]),
+            // boxShadow: const [
+            //   BoxShadow(
+            //       blurStyle: BlurStyle.outer,
+            //       color: Color.fromARGB(85, 158, 158, 158),
+            //       offset: Offset(0, 0),
+            //       spreadRadius: 1,
+            //       blurRadius: 10)
+            // ]
+            ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
