@@ -18,7 +18,7 @@ showFeedbackToast(BuildContext context, String message,
         margin: EdgeInsets.only(
             bottom: (MediaQuery.of(context).padding.bottom - 10)),
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppTheme.btnColor,
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [
               BoxShadow(

@@ -102,7 +102,7 @@ class __LoaderState extends State<_Loader> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color:
-                        index % 2 == 0 ? Colors.white : const Color(0xffE33B58),
+                        index % 2 == 0 ? Colors.white : AppTheme.btnColor,
                   ),
                 );
               },
