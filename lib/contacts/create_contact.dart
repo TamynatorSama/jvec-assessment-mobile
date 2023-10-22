@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:contact_app/app_provider.dart';
+import 'package:contact_app/model/contact_model.dart';
 import 'package:contact_app/utils/app_theme.dart';
 import 'package:contact_app/utils/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class CreateContact extends StatefulWidget {
   const CreateContact({super.key});
@@ -22,7 +25,16 @@ class _CreateContactState extends State<CreateContact> {
   TextEditingController facebookController = TextEditingController();
 
   XFile? image;
-  final GlobalKey<FormFieldState> _formkey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+
+
+  late AppProvider provider;
+  @override
+  void initState() {
+    provider =Provider.of<AppProvider>(context,listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +64,8 @@ class _CreateContactState extends State<CreateContact> {
           actions: [
             TextButton(
                 onPressed: () {
-                  if(_formkey.currentState != null){
-                    _formkey.currentState!.validate();
+                  if(_formkey.currentState!.validate()){
+                    ContactInfo newContact = ContactInfo(firstName: firstNameController.text, lastName: lastNameController.text, phoneNumber: phoneNumberController.text,twitter: twitterController.text,email: emailController.text,facebook: facebookController.text);
                   }
                   // && _formkey.currentState!.isValid)
                 },
