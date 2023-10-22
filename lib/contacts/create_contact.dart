@@ -16,7 +16,6 @@ class CreateContact extends StatefulWidget {
 }
 
 class _CreateContactState extends State<CreateContact> {
-
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
@@ -27,12 +26,10 @@ class _CreateContactState extends State<CreateContact> {
   XFile? image;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-
-
   late AppProvider provider;
   @override
   void initState() {
-    provider =Provider.of<AppProvider>(context,listen: false);
+    provider = Provider.of<AppProvider>(context, listen: false);
     super.initState();
   }
 
@@ -63,10 +60,24 @@ class _CreateContactState extends State<CreateContact> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
-                  if(_formkey.currentState!.validate()){
-                    ContactInfo newContact = ContactInfo(firstName: firstNameController.text, lastName: lastNameController.text, phoneNumber: phoneNumberController.text,twitter: twitterController.text,email: emailController.text,facebook: facebookController.text);
-                    provider.createNewContact(newContact);
+                onPressed: () async{
+                  if (_formkey.currentState!.validate()) {
+                    print("here");
+                    ContactInfo newContact = ContactInfo(
+                        identifier: "asdasda",
+                        firstName: firstNameController.text,
+                        lastName: lastNameController.text,
+                        phoneNumber: phoneNumberController.text,
+                        twitter: twitterController.text,
+                        email: emailController.text,
+                        facebook: facebookController.text);
+                    await provider
+                        .createNewContact(newContact, context)
+                        .then((value) {
+                      if (value) {
+                        Navigator.pop(context);
+                      }
+                    });
                   }
                   // && _formkey.currentState!.isValid)
                 },
@@ -155,19 +166,19 @@ class _CreateContactState extends State<CreateContact> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       hintText: "Example@email.com",
-                      validator: (_)=>null,
+                      validator: (_) => null,
                     ),
                     CustomInputField(
                       fieldName: "Twitter",
                       controller: twitterController,
                       hintText: "@TwitterHandle",
-                      validator: (_)=>null,
+                      validator: (_) => null,
                     ),
                     CustomInputField(
                       fieldName: "FaceBook",
                       controller: facebookController,
                       hintText: "@FacebookHandle",
-                      validator: (_)=>null,
+                      validator: (_) => null,
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).padding.top + 10,

@@ -14,7 +14,7 @@ class ContactListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<ContactInfo> data = [ContactInfo(firstName: "Segun",lastName: "Kolawole",phoneNumber: "09063976031",),ContactInfo(firstName: "Bisi ",lastName: "Law",phoneNumber: "08063473051"),ContactInfo(firstName: "Abdullai",lastName: "akanbi",phoneNumber: "07083436031"),ContactInfo(firstName: "Zen",lastName: "nitsu",phoneNumber: "01062936431"),];
+    List<ContactInfo> data = [ContactInfo(identifier:"asdasda",firstName: "Segun",lastName: "Kolawole",phoneNumber: "09063976031",),ContactInfo(identifier:"asdasda",firstName: "Bisi ",lastName: "Law",phoneNumber: "08063473051"),ContactInfo(identifier:"asdasda",firstName: "Abdullai",lastName: "akanbi",phoneNumber: "07083436031"),ContactInfo(identifier:"asdasda",firstName: "Zen",lastName: "nitsu",phoneNumber: "01062936431"),];
      SuspensionUtil.sortListBySuspensionTag(data);
      SuspensionUtil.setShowSuspensionStatus(data);
 
