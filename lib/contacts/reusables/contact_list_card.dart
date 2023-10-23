@@ -26,7 +26,7 @@ class ContactListCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 25,
-              backgroundColor: image!=null?null:AppTheme.btnColor,
+              backgroundColor: AppTheme.btnColor,
               backgroundImage: image!=null? CachedNetworkImageProvider( "${baseUrl.replaceAll("api", "")}$image",cacheKey: image,):null,
               child: Offstage(
                 offstage: image!=null,

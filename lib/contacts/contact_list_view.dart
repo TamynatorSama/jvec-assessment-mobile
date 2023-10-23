@@ -5,6 +5,7 @@ import 'package:contact_app/contacts/contact_details.dart';
 import 'package:contact_app/contacts/create_contact.dart';
 import 'package:contact_app/contacts/reusables/contact_list_Card.dart';
 import 'package:contact_app/homepage.dart';
+import 'package:contact_app/model/contact_model.dart';
 import 'package:contact_app/model/user_data.dart';
 import 'package:contact_app/utils/app_theme.dart';
 import 'package:contact_app/utils/custom_loader.dart';
@@ -24,28 +25,44 @@ class ContactListView extends StatefulWidget {
 class _ContactListViewState extends State<ContactListView> {
   late AppProvider provider;
   GlobalKey<RefreshIndicatorState> refresh = GlobalKey<RefreshIndicatorState>();
+  late TextEditingController searchController;
 
   @override
   void initState() {
     provider = Provider.of<AppProvider>(context, listen: false);
+    searchController = TextEditingController()
+      ..addListener(() => setState(() {}));
     getData(shouldShowRefresh: true);
     super.initState();
   }
 
   Future<void> getData({bool shouldShowRefresh = false}) async {
-    if (shouldShowRefresh && refresh.currentState != null) {
+    if (shouldShowRefresh) {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         refresh.currentState?.show();
       });
     }
-    await provider.getAllContacts(context, shouldShowToast: shouldShowRefresh);
+    await provider.getAllContacts(context, init: shouldShowRefresh);
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(builder: (context, provider, value) {
-      SuspensionUtil.sortListBySuspensionTag(provider.contacts);
-      SuspensionUtil.setShowSuspensionStatus(provider.contacts);
+      List<ContactInfo> filter = provider.contacts
+          .where((element) =>
+              element.phoneNumber.contains(searchController.text) ||
+              element.firstName.toLowerCase().contains(searchController.text.toLowerCase()) ||
+              element.lastName.toLowerCase().contains(searchController.text.toLowerCase()))
+          .toList();
+
+      SuspensionUtil.sortListBySuspensionTag(filter);
+      SuspensionUtil.setShowSuspensionStatus(filter);
       return Scaffold(
         backgroundColor: AppTheme.backgroundColor,
         body: RefreshIndicator(
@@ -72,7 +89,8 @@ class _ContactListViewState extends State<ContactListView> {
                         await AuthRequest.logout().then((value) {
                           CustomLoader.dismissLoader().then((_) async {
                             if (value["status"]) {
-                              showFeedbackToast(context, value["message"],type: ToastType.success);
+                              showFeedbackToast(context, value["message"],
+                                  type: ToastType.success);
                               await UserData.storage.deleteAll().then((_) {
                                 Navigator.pushAndRemoveUntil(
                                     context,
@@ -97,53 +115,54 @@ class _ContactListViewState extends State<ContactListView> {
                       ))
                 ],
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              // if (provider.contacts.isNotEmpty)
-              //   Column(
-              //     children: [
-              //       const SizedBox(
-              //         height: 20,
-              //       ),
-              //       TextFormField(
-              //         decoration: InputDecoration(
-              //             filled: true,
-              //             fillColor: AppTheme.btnColor,
-              //             hintText: "Search...",
-              //             hintStyle:
-              //                 AppTheme.headerTextStyle.override(fontSize: 16),
-              //             prefixIcon: Padding(
-              //               padding: const EdgeInsets.all(10.0),
-              //               child: SvgPicture.string(
-              //                 '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path fill="grey" d="M19 11a8 8 0 1 1-16 0a8 8 0 0 1 16 0Z" opacity=".16"/><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314Z"/></g></svg>',
-              //                 color: const Color.fromARGB(255, 199, 199, 199),
-              //               ),
-              //             ),
-              //             contentPadding: const EdgeInsets.symmetric(
-              //                 horizontal: 15, vertical: 10),
-              //             border: OutlineInputBorder(
-              //                 borderRadius: BorderRadius.circular(8),
-              //                 borderSide: const BorderSide(
-              //                     width: 1.5,
-              //                     color: Color.fromARGB(255, 222, 222, 222))),
-              //             focusedBorder: OutlineInputBorder(
-              //                 borderRadius: BorderRadius.circular(8),
-              //                 borderSide: const BorderSide(
-              //                     width: 1.5,
-              //                     color: Color.fromARGB(255, 222, 222, 222))),
-              //             enabledBorder: OutlineInputBorder(
-              //                 borderRadius: BorderRadius.circular(8),
-              //                 borderSide: const BorderSide(
-              //                     width: 1.5,
-              //                     color: Color.fromARGB(255, 222, 222, 222)))),
-              //         style: AppTheme.headerTextStyle.override(fontSize: 16),
-              //       ),
-              //       const SizedBox(
-              //         height: 40,
-              //       ),
-              //     ],
-              //   ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              if (provider.contacts.isNotEmpty)
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: AppTheme.btnColor,
+                          hintText: "Search...",
+                          hintStyle:
+                              AppTheme.headerTextStyle.override(fontSize: 16),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: SvgPicture.string(
+                              '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path fill="grey" d="M19 11a8 8 0 1 1-16 0a8 8 0 0 1 16 0Z" opacity=".16"/><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314Z"/></g></svg>',
+                              color: const Color.fromARGB(255, 199, 199, 199),
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                  width: 1.5,
+                                  color: Color.fromARGB(255, 222, 222, 222))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                  width: 1.5,
+                                  color: Color.fromARGB(255, 222, 222, 222))),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                  width: 1.5,
+                                  color: Color.fromARGB(255, 222, 222, 222)))),
+                      style: AppTheme.headerTextStyle.override(fontSize: 16),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ),
 
               Expanded(
                   child: provider.contacts.isEmpty
@@ -176,17 +195,16 @@ class _ContactListViewState extends State<ContactListView> {
                               indexHintAlignment: Alignment.centerRight,
                               selectTextStyle: AppTheme.headerTextStyle),
                           indexBarWidth: 10,
-                          data: provider.contacts,
-                          itemCount: provider.contacts.length,
+                          data: filter,
+                          itemCount: filter.length,
                           itemBuilder: (context, index) => Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (provider.contacts[index].isShowSuspension)
+                                  if (filter[index].isShowSuspension)
                                     Column(
                                       children: [
                                         Text(
-                                          provider.contacts[index]
-                                              .getSuspensionTag(),
+                                          filter[index].getSuspensionTag(),
                                           style: AppTheme.headerTextStyle
                                               .override(fontSize: 16),
                                         ),
@@ -196,21 +214,20 @@ class _ContactListViewState extends State<ContactListView> {
                                       ],
                                     ),
                                   ContactListCard(
-                                    image: provider.contacts[index]
-                                            .profilePicture.isNotEmpty
-                                        ? provider
-                                            .contacts[index].profilePicture
-                                        : null,
+                                    image:
+                                        filter[index].profilePicture.isNotEmpty
+                                            ? filter[index].profilePicture
+                                            : null,
                                     label:
-                                        "${provider.contacts[index].firstName} ${provider.contacts[index].lastName}",
-                                    value: provider.contacts[index].phoneNumber,
+                                        "${filter[index].firstName} ${provider.contacts[index].lastName}",
+                                    value: filter[index].phoneNumber,
                                     onTap: () => Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ContactDetails(
-                                                  contactId: provider
-                                                      .contacts[index]
-                                                      .identifier,
+                                                  contactId:
+                                                      filter[index].identifier,
+                                                      contact: filter[index],
                                                 ))),
                                   )
                                 ],

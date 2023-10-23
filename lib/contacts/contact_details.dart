@@ -16,7 +16,8 @@ import 'package:provider/provider.dart';
 
 class ContactDetails extends StatelessWidget {
   final String contactId;
-  const ContactDetails({super.key, required this.contactId});
+  final ContactInfo contact;
+  const ContactDetails({super.key, required this.contactId,required this.contact});
 
   @override
   Widget build(BuildContext context) {
@@ -142,16 +143,10 @@ class ContactDetails extends StatelessWidget {
                                   }),
                               ActionBtn(
                                   icons: svgIcons['delete']!,
-                                  callback: () async {
+                                  callback: () async{
                                     CustomLoader.showLoader(context);
                                     await provider
-                                        .deleteContact(contactId, context)
-                                        .then((value) {
-                                      CustomLoader.dismissLoader();
-                                      if (value) {
-                                        Navigator.pop(context);
-                                      }
-                                    });
+                                        .deleteContact(contactId, context);
                                   })
                             ],
                           ),

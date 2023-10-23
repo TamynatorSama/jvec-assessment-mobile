@@ -1,7 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:contact_app/contacts/request.dart';
 import 'package:contact_app/model/contact_model.dart';
+import 'package:contact_app/model/user_data.dart';
+import 'package:contact_app/utils/custom_loader.dart';
 import 'package:contact_app/utils/feedbacktoast.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +28,7 @@ class AppProvider extends ChangeNotifier {
       }
       contacts.add(newContact);
       notifyListeners();
+      saveContactToLocalStorage();
       return true;
     }
     showFeedbackToast(context, response["message"]);
@@ -50,6 +55,7 @@ class AppProvider extends ChangeNotifier {
         return e;
       }).toList();
       notifyListeners();
+      saveContactToLocalStorage();
       return true;
     }
     showFeedbackToast(context, response["message"]);
@@ -63,10 +69,12 @@ class AppProvider extends ChangeNotifier {
     final response = await ContactRequest.deleteContact(contactId);
 
     if (response["status"]) {
+      await CustomLoader.dismissLoader();
       showFeedbackToast(context, response["message"], type: ToastType.success);
-
+      Navigator.pop(context);
       contacts.removeWhere((e) => e.identifier == contactId);
       notifyListeners();
+      saveContactToLocalStorage();
       return true;
     }
     showFeedbackToast(context, response["message"]);
@@ -74,28 +82,33 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<void> getAllContacts(BuildContext context,
-      {bool shouldShowToast = false}) async {
+      {bool init = false}) async {
+    if (UserData.userSavedContacts.isNotEmpty && init) {
+      contacts = UserData.userSavedContacts;
+    }
+
     final response = await ContactRequest.getContacts();
 
     if (response["status"]) {
-      if (shouldShowToast) {
-        showFeedbackToast(context, response["message"],
-            type: ToastType.success);
-      }
+      // if (shouldShowToast) {
+      //   showFeedbackToast(context, response["message"],
+      //       type: ToastType.success);
+      // }
 
       List<ContactInfo> allContacts = (response["result"] as List)
           .map((e) => ContactInfo.fromJson(e))
           .toList();
       contacts = allContacts;
       notifyListeners();
+      saveContactToLocalStorage();
       return;
     }
-    if (shouldShowToast) showFeedbackToast(context, response["message"]);
+    showFeedbackToast(context, response["message"]);
   }
 
-  Future<bool> logOut(BuildContext context) async {
-
-    // await 
-    return false;
+  Future<void> saveContactToLocalStorage() async {
+    final contactMap = contacts.map((e) => e.toJson()).toList();
+    await UserData.storage
+        .write(key: 'user_contacts', value: jsonEncode(contactMap));
   }
 }
